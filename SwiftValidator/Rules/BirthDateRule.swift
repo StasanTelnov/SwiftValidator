@@ -77,7 +77,7 @@ public class BirthDateRule: Rule {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: localeIdentifier)
         formatter.dateFormat = dateFormat
-        guard let date = formatter.date(from: value)?.addingTimeInterval(kSecondsInDay) else {
+        guard let date = formatter.date(from: value) else {
             return false
         }
         
@@ -85,9 +85,9 @@ public class BirthDateRule: Rule {
             value != formatter.string(from: date) {
             return false
         }
-
         
-        guard date < maxDate else {
+        
+        guard date <= maxDate else {
             return false
         }
         

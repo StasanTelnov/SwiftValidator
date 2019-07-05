@@ -515,6 +515,15 @@ class SwiftValidatorTests: XCTestCase {
         XCTAssertFalse(BirthDateRule().validate(INVALID_BIRTH_DATE_MAX), "Birth date should be valid")
     }
     
+    func testBirthDateInvalidMax2() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        
+        let nextDayDate = Date().addingTimeInterval(3_600 * 24)
+        let nextDayValue = formatter.string(from: nextDayDate)
+        XCTAssertFalse(BirthDateRule().validate(nextDayValue), "Birth date should be valid")
+    }
+    
     func testBirthDateInvalidDay() {
         XCTAssertFalse(BirthDateRule().validate(INVALID_BIRTH_DATE_DAY), "Birth date should be valid")
     }
