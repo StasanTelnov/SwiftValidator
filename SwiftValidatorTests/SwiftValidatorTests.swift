@@ -34,7 +34,6 @@ class SwiftValidatorTests: XCTestCase {
     let VALID_CARD_EXPIRY_MONTH = "10"
     let INVALID_CARD_EXPIRY_MONTH = "13"
     
-    let VALID_CARD_EXPIRY_YEAR = "2018"
     let INVALID_CARD_EXPIRY_YEAR = "2016"
     
     let LEN_3 = "hey"
@@ -91,7 +90,10 @@ class SwiftValidatorTests: XCTestCase {
     // MARK: Expiry Year
     
     func testCardExpiryYearValid() {
-        XCTAssertTrue(CardExpiryYearRule().validate(VALID_CARD_EXPIRY_YEAR), "Expiry year Should be valid")
+        let calendar = Calendar.current
+        let currentYearInt = calendar.component(.year, from: Date())
+        let currentYearString = String(currentYearInt)
+        XCTAssertTrue(CardExpiryYearRule().validate(currentYearString), "Expiry year Should be valid")
     }
     
     func testCardExpiryYearInvalid() {
