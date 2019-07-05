@@ -271,17 +271,19 @@
 			isa = PBXGroup;
 			children = (
 				7CC1E4CE1C636B4500AF013C /* AlphaRule.swift */,
+				7CC1E4D01C637A7700AF013C /* AlphaNumericRule.swift */,
+				798E3BB522CE3B7200C596E8 /* BirthDateRule.swift */,
 				C87F606B1E2B68C900EB8429 /* CardExpiryYearRule.swift */,
 				C87F60691E2B678B00EB8429 /* CardExpiryMonthRule.swift */,
-				7CC1E4D01C637A7700AF013C /* AlphaNumericRule.swift */,
 				7CC1E4D21C637ABC00AF013C /* CharacterSetRule.swift */,
-				7CC1E4D41C637C8500AF013C /* IPV4Rule.swift */,
-				7CC1E4D61C637F6E00AF013C /* ISBNRule.swift */,
-				7CC1E4DA1C63BFA600AF013C /* HexColorRule.swift */,
 				FB465CE31B9889EA00398388 /* ConfirmRule.swift */,
 				FB465CE41B9889EA00398388 /* EmailRule.swift */,
+				62C1821C1C6312F5003788E7 /* ExactLengthRule.swift */,
 				FB465CE51B9889EA00398388 /* FloatRule.swift */,
 				FB465CE61B9889EA00398388 /* FullNameRule.swift */,
+				7CC1E4DA1C63BFA600AF013C /* HexColorRule.swift */,
+				7CC1E4D41C637C8500AF013C /* IPV4Rule.swift */,
+				7CC1E4D61C637F6E00AF013C /* ISBNRule.swift */,
 				FB465CE71B9889EA00398388 /* MaxLengthRule.swift */,
 				FB465CE81B9889EA00398388 /* MinLengthRule.swift */,
 				FB465CE91B9889EA00398388 /* PasswordRule.swift */,
@@ -291,8 +293,6 @@
 				FB465CED1B9889EA00398388 /* Rule.swift */,
 				FB465CEE1B9889EA00398388 /* ValidationRule.swift */,
 				FB465CEF1B9889EA00398388 /* ZipCodeRule.swift */,
-				62C1821C1C6312F5003788E7 /* ExactLengthRule.swift */,
-				798E3BB522CE3B7200C596E8 /* BirthDateRule.swift */,
 			);
 			path = Rules;
 			sourceTree = "<group>";
