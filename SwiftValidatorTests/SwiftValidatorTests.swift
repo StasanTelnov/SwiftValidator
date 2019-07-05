@@ -41,6 +41,14 @@ class SwiftValidatorTests: XCTestCase {
     let LEN_5 = "Howdy"
     let LEN_20 = "Paint the cat orange"
     
+    let VALID_BIRTH_DATE = "10.07.1989"
+    let INVALID_BIRTH_DATE_FORMAT = "10/07/1989"
+    let INVALID_BIRTH_DATE_FORMAT2 = "10/7/1989"
+    let INVALID_BIRTH_DATE_MIN = "10.07.1000"
+    let INVALID_BIRTH_DATE_MAX = "10.07.5000"
+    let INVALID_BIRTH_DATE_DAY = "40.07.1989"
+    let INVALID_BIRTH_DATE_MOUNTH = "10.19.1989"
+    
     let REGISTER_TXT_VIEW = UITextView()
     let REGISTER_TXT_FIELD = UITextField()
     let REGISTER_VALIDATOR = Validator()
@@ -482,5 +490,40 @@ class SwiftValidatorTests: XCTestCase {
             XCTAssert(errors.count == 1, "Should come back with errors")
             XCTAssert(!(self.REGISTER_TXT_FIELD.layer.borderColor! == UIColor.red.cgColor), "Color shouldn't get set at all")
         }
+    }
+    
+    
+    // MARK: Birth date
+    
+    func testBirthDateValid() {
+        XCTAssertTrue(BirthDateRule().validate(VALID_BIRTH_DATE), "Birth date should be valid")
+    }
+    
+    func testBirthDateInvalidFormat() {
+        XCTAssertFalse(BirthDateRule().validate(INVALID_BIRTH_DATE_FORMAT), "Birth date should be valid")
+    }
+    
+    func testBirthDateInvalidFormat2() {
+        XCTAssertFalse(BirthDateRule().validate(INVALID_BIRTH_DATE_FORMAT2), "Birth date should be valid")
+    }
+    
+    func testBirthDateInvalidMin() {
+        XCTAssertFalse(BirthDateRule().validate(INVALID_BIRTH_DATE_MIN), "Birth date should be valid")
+    }
+
+    func testBirthDateInvalidMax() {
+        XCTAssertFalse(BirthDateRule().validate(INVALID_BIRTH_DATE_MAX), "Birth date should be valid")
+    }
+    
+    func testBirthDateInvalidDay() {
+        XCTAssertFalse(BirthDateRule().validate(INVALID_BIRTH_DATE_DAY), "Birth date should be valid")
+    }
+    
+    func testBirthDateInvalidMount() {
+        XCTAssertFalse(BirthDateRule().validate(INVALID_BIRTH_DATE_MOUNTH), "Birth date should be valid")
+    }
+    
+    func testBirthDateMessage() {
+        XCTAssertNotNil(BirthDateRule().errorMessage())
     }
 }
