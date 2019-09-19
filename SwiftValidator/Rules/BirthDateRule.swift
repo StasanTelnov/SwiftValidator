@@ -8,18 +8,31 @@
 
 import Foundation
 
-/// Seconds in 1 day.
-private let kSecondsInDay: TimeInterval =  24 * 3_600
-
-/// Seconds in 100 years. Years * days in one year * hours in one day * seconds in one day
-private let kTimeInterval100Years: TimeInterval = 100 * 365 * kSecondsInDay
 
 /**
  `BirthDateRule` is a subclass of `Rule` that check and validate birth date with format, locale, min and max dates
  */
 public class BirthDateRule: Rule {
+    
+    public struct ErrorsMessages {
+        var general: String
+        var maxDate: String
+        var minDate: String
+        var format: String
+        
+        public init(general: String = "Birth date incorrect. Should '%@'", maxDate: String = "Birth date dont can more, that %@", minDate: String = "Birth date dont can less, that %@", format: String = "Incorrect format. You should fill date in format '%@', but current date '%@'") {
+            self.general = general
+            self.maxDate = maxDate
+            self.minDate = minDate
+            self.format = format
+        }
+    }
+    
     /// Error message to be displayed if validation fails.
-    private var message: String
+    private var message: String?
+    
+    /// Error message to be displayed if validation fails.
+    private var messages: ErrorsMessages
     
     /// Date format of `DateFormatter`. Default is dd.MM.yyyy
     private var dateFormat: String
@@ -29,7 +42,7 @@ public class BirthDateRule: Rule {
     /// Maximum date of birth. Default is current day
     private var maxDate: Date
     /// Minimal date of birth. Default current date minus 100 years
-    private var minDate: Date = Date(timeIntervalSinceNow: -kTimeInterval100Years) // hack, because in validate method optional date never not nil
+    private var minDate: Date? = nil // hack, because in validate method optional date never not nil
     
     /// If true, that result string of `DateFormatter` should equal to value
     private var isValueEqualToFormat: Bool
@@ -45,24 +58,45 @@ public class BirthDateRule: Rule {
      - parameter isValueEqualToFormat: Minimal date of birth. Optional.
      - returns: An initialized object, or nil if an object could not be created for some reason that would not result in an exception.
      */
-    public init(message: String = "Birth date is invalid",
+    public init(messages: ErrorsMessages = ErrorsMessages(),
                 format: String = "dd.MM.yyyy",
                 localeIdentifier: String = Locale.current.identifier,
                 maxDate: Date = Date(),
                 minDate: Date? = nil,
                 isValueEqualToFormat: Bool = true) {
-        self.message = message
+        self.messages = messages
         self.dateFormat = format
         self.localeIdentifier = localeIdentifier
         self.maxDate = maxDate
-        if let minDate = minDate {
-            self.minDate = minDate
-        }
+        self.minDate = minDate
         
         self.isValueEqualToFormat = isValueEqualToFormat
     }
     
+    /**
+     Update one or mo property of `BirthDateRule`.
+     
+     - parameter format: Date format string of `DateFormatter`.
+     - parameter localeIdentifier: Identifier string of `Locale`.
+     - parameter maxDate: Maximum date of birth.
+     - parameter minDate: Minimal date of birth.
+     - parameter isValueEqualToFormat: Minimal date of birth.
+     */
+    public func updateRule(format: String? = nil,
+                           localeIdentifier: String? = nil,
+                           maxDate: Date? = nil,
+                           minDate: Date? = nil,
+                           isValueEqualToFormat: Bool? = nil) {
+        self.dateFormat = format ?? self.dateFormat
+        self.localeIdentifier = localeIdentifier ?? self.localeIdentifier
+        self.maxDate = maxDate ?? self.maxDate
+        self.minDate = minDate ?? self.minDate
+        
+        self.isValueEqualToFormat = isValueEqualToFormat ?? self.isValueEqualToFormat
+    }
     
+    
+
     /**
      Used to validate field.
      
@@ -81,17 +115,23 @@ public class BirthDateRule: Rule {
             return false
         }
         
+        let formatted = formatter.string(from: date)
         if isValueEqualToFormat,
-            value != formatter.string(from: date) {
+            value != formatted {
+            message = String(format: messages.format, dateFormat, value)
             return false
         }
         
         
         guard date <= maxDate else {
+            message = String(format: messages.maxDate, formatter.string(from: maxDate))
             return false
         }
+
         
-        guard date >= minDate else {
+        if let minDate = minDate,
+            date >= minDate {
+            message = String(format: messages.minDate, formatter.string(from: minDate))
             return false
         }
         
@@ -105,7 +145,7 @@ public class BirthDateRule: Rule {
      - returns: String of error message.
      */
     public func errorMessage() -> String {
-        return message
+        return message ?? String(format: messages.general, dateFormat)
     }
     
 }

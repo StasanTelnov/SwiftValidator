@@ -40,6 +40,8 @@ public class ValidationRule {
     public func validateField() -> ValidationError? {
         return rules.filter{
             return !$0.validate(field.validationText)
-            }.map{ rule -> ValidationError in return ValidationError(field: self.field, errorLabel:self.errorLabel, error: rule.errorMessage()) }.first
+            }.map{
+                rule -> ValidationError in return ValidationError(field: self.field, errorLabel:self.errorLabel, error: rule.errorMessage())
+        }.first
     }
 }

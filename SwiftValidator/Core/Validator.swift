@@ -127,16 +127,17 @@ public class Validator {
      
      - returns: No return value.
      */
-    public func validate(_ delegate:ValidationDelegate) {
+    @discardableResult
+    public func validate(_ delegate:ValidationDelegate, _ withGenerateError: Bool = true) -> Bool {
         
         self.validateAllFields()
         
-        if errors.isEmpty {
-            delegate.validationSuccessful()
-        } else {
-            delegate.validationFailed(errors.map { (fields[$1.field]!, $1) })
+        guard errors.isEmpty else {
+            delegate.validationFailed(errors.map { (fields[$1.field]!, $1) }, withGenerateError)
+            return false
         }
-        
+        delegate.validationSuccessful()
+        return true
     }
     
     /**

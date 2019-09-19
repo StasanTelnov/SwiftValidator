@@ -23,5 +23,5 @@ public protocol ValidationDelegate {
      
      - returns: No return value.
      */
-    func validationFailed(_ errors: [(Validatable, ValidationError)])
+    func validationFailed(_ errors: [(Validatable, ValidationError)], _ withGenerateError: Bool)
 }
